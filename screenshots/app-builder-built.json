@@ -1,0 +1,40 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Drop Lab",
+      "hasCanvas": false,
+      "bodyTextLen": 75,
+      "bodyTextHash": "c46a3ee2553bddea7b4b78999846aa93e9109339311733e9cc485f12dd48f188",
+      "bodyTextPrefix": "DROP LAB 掉落實驗室 物體 11 拖曳物體 · 拖空白處旋轉視角 · 長按形狀連發 球體 盒子 圓柱 清除 暫停 重力 ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Drop Lab",
+      "hasCanvas": false,
+      "bodyTextLen": 50,
+      "bodyTextHash": "ee71e0f00a5afe939a16c264d5efa81c4d6fc65fa4c428f3e31d41a48f237136",
+      "bodyTextPrefix": "DROP LAB 掉落實驗室 物體 11 球體 盒子 圓柱 清除 暫停 重力 9.8 彈性 0.28",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": true,
+  "baselineReasons": [
+    "mobile: canvas disappeared"
+  ]
+}
