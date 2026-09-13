@@ -1,5 +1,9 @@
 # Drop Lab · 掉落實驗室
 
+**繁體中文** | [English](README.en.md)
+
+**[線上展示 / Live Demo](https://bay-gem-iris-pilot.grok.me/)**
+
 3D 物理遊樂場：掉落球體、盒子與圓柱，讓它們在重力下堆疊、彈跳、傾倒。拖曳物體、甩出去，並即時調整重力與彈性。
 
 ![Drop Lab](public/og.jpg)
