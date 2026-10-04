@@ -1,13 +1,12 @@
+import { createClientOnlyFn } from "@tanstack/react-start";
+import { SceneBoundary } from "./scene-boundary";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Toolbar } from "./toolbar";
 import { usePlayground } from "./store";
 
-const loadLive = () => import("./playground-live");
+const loadLive = createClientOnlyFn(() => import("./playground-live"));
 const PlaygroundCanvas = lazy(loadLive);
 
-if (typeof window !== "undefined") {
-  void loadLive();
-}
 
 function Keyboard() {
   const spawn = usePlayground((s) => s.spawn);
@@ -48,6 +47,8 @@ function Keyboard() {
 
 export function Playground() {
   const [mounted, setMounted] = useState(false);
+  const [started, setStarted] = useState(false);
+  const runtimeReady = usePlayground(s => s.runtimeReady);
 
   useEffect(() => {
     setMounted(true);
@@ -55,18 +56,19 @@ export function Playground() {
 
   return (
     <main className="relative h-dvh overflow-hidden bg-bg text-fg">
-      {mounted ? (
-        <Suspense fallback={null}>
+      {mounted && started ? (
+        <SceneBoundary><Suspense fallback={null}>
           <PlaygroundCanvas />
-        </Suspense>
+        </Suspense></SceneBoundary>
       ) : null}
-      {!mounted ? (
-        <div className="pointer-events-none absolute inset-x-0 top-1/2 z-20 flex -translate-y-1/2 justify-center">
-          <p className="rounded-xl bg-surface px-4 py-2 font-display text-xl text-fg shadow-border">
-            載入物理引擎
-          </p>
+      {!started ? (
+        <div className="absolute inset-x-0 top-1/2 z-20 flex -translate-y-1/2 justify-center">
+          <button type="button" onClick={() => setStarted(true)} className="rounded-xl bg-surface px-4 py-2 font-display text-xl text-fg shadow-border">
+            開始實驗
+          </button>
         </div>
       ) : null}
+      {started && !runtimeReady ? <p role="status" className="pointer-events-none absolute inset-x-0 top-1/2 text-center">載入物理引擎</p> : null}
       <Toolbar />
       <Keyboard />
     </main>

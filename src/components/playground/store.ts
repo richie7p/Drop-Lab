@@ -25,6 +25,8 @@ type PlaygroundState = {
   bodies: BodySpec[];
   dragging: boolean;
   paused: boolean;
+  runtimeReady: boolean;
+  setRuntimeReady: (ready: boolean) => void;
   spawn: (kind?: ShapeKind, position?: [number, number, number]) => void;
   clear: () => void;
   remove: (id: string) => void;
@@ -136,6 +138,8 @@ export const usePlayground = create<PlaygroundState>((set, get) => ({
   bodies: initialBodies(),
   dragging: false,
   paused: false,
+  runtimeReady: false,
+  setRuntimeReady: (runtimeReady) => set({ runtimeReady }),
 
   spawn: (kind, position) => {
     const nextKind = kind ?? get().spawnKind;
@@ -153,8 +157,8 @@ export const usePlayground = create<PlaygroundState>((set, get) => ({
   remove: (id) =>
     set((state) => ({ bodies: state.bodies.filter((body) => body.id !== id) })),
 
-  setGravity: (gravity) => set({ gravity }),
-  setRestitution: (restitution) => set({ restitution }),
+  setGravity: (gravity) => { if (Number.isFinite(gravity)) set({ gravity: Math.min(20, Math.max(0, gravity)) }); },
+  setRestitution: (restitution) => { if (Number.isFinite(restitution)) set({ restitution: Math.min(1, Math.max(0, restitution)) }); },
   setSpawnKind: (spawnKind) => set({ spawnKind }),
   setDragging: (dragging) => set({ dragging }),
   setPaused: (paused) => set({ paused }),

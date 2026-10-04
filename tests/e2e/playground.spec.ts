@@ -1,0 +1,26 @@
+import { test, expect } from "@playwright/test";
+import { mkdir } from "node:fs/promises";
+test("deferred physics, spawn, pause, clear and keyboard activation", async ({ page }, info) => {
+  const errors: string[] = []; const physicsRequests: string[] = [];
+  page.on("pageerror", e => errors.push(e.message)); page.on("request", req => { if (/physics-wasm/.test(req.url())) physicsRequests.push(req.url()); });
+  await page.goto("/"); await expect(page.getByRole("button", { name: "開始實驗" })).toBeVisible();
+  expect(physicsRequests).toEqual([]);
+  await page.getByRole("button", { name: "開始實驗" }).click();
+  await expect(page.locator("canvas")).toBeVisible();
+  await expect(page.getByRole("status")).toBeHidden();
+  await expect(page.getByRole("alert")).toHaveCount(0);
+  await page.getByRole("button", { name: "暫停", exact: true }).click();
+  await expect(page.getByRole("button", { name: "繼續", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "清除", exact: true }).click();
+  await expect(page.getByTestId("body-count")).toHaveText("0");
+  await page.getByRole("button", { name: "球體", exact: true }).click();
+  await expect(page.getByTestId("body-count")).toHaveText("1");
+  await page.getByRole("button", { name: "盒子", exact: true }).focus(); await page.keyboard.press("Enter");
+  await expect(page.getByTestId("body-count")).toHaveText("2");
+  await page.keyboard.press("3"); await expect(page.getByTestId("body-count")).toHaveText("3");
+  await page.getByRole("button", { name: "繼續", exact: true }).click();
+  await expect(page.getByRole("button", { name: "暫停", exact: true })).toHaveAttribute("aria-pressed", "false");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect(errors).toEqual([]);
+  await mkdir("screenshots", { recursive: true }); await page.screenshot({ path: `screenshots/${info.project.name}.png` });
+});
