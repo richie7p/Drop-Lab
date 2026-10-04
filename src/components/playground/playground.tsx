@@ -63,7 +63,7 @@ export function Playground() {
       ) : null}
       {!started ? (
         <div className="absolute inset-x-0 top-1/2 z-20 flex -translate-y-1/2 justify-center">
-          <button type="button" onClick={() => setStarted(true)} className="rounded-xl bg-surface px-4 py-2 font-display text-xl text-fg shadow-border">
+          <button type="button" disabled={!mounted} onClick={() => setStarted(true)} className="rounded-xl bg-surface px-4 py-2 font-display text-xl text-fg shadow-border disabled:opacity-60">
             開始實驗
           </button>
         </div>
