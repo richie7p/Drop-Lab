@@ -15,7 +15,7 @@
 - 空白處拖曳旋轉視角，滾輪縮放
 - 即時調整 **重力**（0–20）與 **彈性**（0–1）
 - 清除場景、暫停 / 繼續模擬
-- 開場不穩塔，立刻看到碰撞
+- 按「開始實驗」載入 3D 物理引擎，再觀察開場不穩塔的碰撞
 - 最多約 56 個物體，超出會從最舊的開始移除
 - 桌面與手機皆可操作
 
@@ -48,7 +48,7 @@
 需要 **Node.js 22**。
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -73,3 +73,7 @@ public/                    # favicon、og 圖
 ## 授權
 
 MIT
+
+## Audit and verification
+
+See [the audit follow-up](docs/AUDIT-FOLLOWUP.md) for fixes, reproducible test commands, bundle budgets and remaining device/deployment checks.

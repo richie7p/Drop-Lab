@@ -21,7 +21,7 @@ const _dir = new THREE.Vector3();
 const _cam = new THREE.Vector3();
 
 let session: DragSession | null = null;
-let pointer = { x: 0, y: 0 };
+const pointer = { x: 0, y: 0 };
 let canvasEl: HTMLCanvasElement | null = null;
 
 export function getDragId() {
@@ -80,12 +80,13 @@ export function beginDrag(opts: {
 export function updatePointer(clientX: number, clientY: number) {
   if (!canvasEl) return;
   const rect = canvasEl.getBoundingClientRect();
+  if (rect.width <= 0 || rect.height <= 0 || !Number.isFinite(clientX) || !Number.isFinite(clientY)) return;
   pointer.x = ((clientX - rect.left) / rect.width) * 2 - 1;
   pointer.y = -((clientY - rect.top) / rect.height) * 2 + 1;
 }
 
 export function stepDrag(camera: THREE.Camera, dt: number) {
-  if (!session) return;
+  if (!session || !Number.isFinite(dt) || dt <= 0) return;
 
   _ndc.set(pointer.x, pointer.y);
   _ray.setFromCamera(_ndc, camera);
@@ -116,13 +117,15 @@ export function endDrag(throwBody = true) {
     vel.multiplyScalar(MAX_THROW_SPEED / speed);
   }
 
-  body.setBodyType(RigidBodyType.Dynamic, true);
-  if (throwBody) {
-    body.setLinvel({ x: vel.x, y: vel.y, z: vel.z }, true);
-  } else {
-    body.setLinvel({ x: 0, y: 0, z: 0 }, true);
+  if (body.isValid()) {
+    body.setBodyType(RigidBodyType.Dynamic, true);
+    if (throwBody) {
+      body.setLinvel({ x: vel.x, y: vel.y, z: vel.z }, true);
+    } else {
+      body.setLinvel({ x: 0, y: 0, z: 0 }, true);
+    }
+    body.wakeUp();
   }
-  body.wakeUp();
 
   if (canvasEl) {
     try {

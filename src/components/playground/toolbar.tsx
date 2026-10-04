@@ -101,7 +101,7 @@ export function Toolbar() {
           <p className="text-[0.65rem] font-medium uppercase tracking-[0.16em] text-muted">
             物體
           </p>
-          <p className="text-right font-mono text-lg tabular-nums leading-none text-fg">
+          <p data-testid="body-count" aria-live="polite" className="text-right font-mono text-lg tabular-nums leading-none text-fg">
             {count}
           </p>
         </div>
@@ -126,6 +126,8 @@ export function Toolbar() {
                     event.currentTarget.setPointerCapture(event.pointerId);
                     holds[kind].start();
                   }}
+                  onClick={(event) => { if (event.detail === 0) spawn(kind); }}
+                  onLostPointerCapture={holds[kind].stop}
                   onPointerUp={holds[kind].stop}
                   onPointerCancel={holds[kind].stop}
                 >

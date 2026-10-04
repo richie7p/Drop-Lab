@@ -102,6 +102,10 @@ function PhysicsGround() {
 }
 
 function DragSystem() {
+  useEffect(() => {
+    usePlayground.getState().setRuntimeReady(true);
+    return () => usePlayground.getState().setRuntimeReady(false);
+  }, []);
   const { camera, gl } = useThree();
   const bodies = usePlayground((s) => s.bodies);
 
@@ -133,13 +137,14 @@ function DragSystem() {
 
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
-    window.addEventListener("pointercancel", onUp);
+    window.addEventListener("pointercancel", onBlur);
     window.addEventListener("blur", onBlur);
     return () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
-      window.removeEventListener("pointercancel", onUp);
+      window.removeEventListener("pointercancel", onBlur);
       window.removeEventListener("blur", onBlur);
+      endDrag(false);
     };
   }, [gl]);
 

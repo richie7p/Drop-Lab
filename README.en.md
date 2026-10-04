@@ -48,7 +48,7 @@ A 3D physics playground: drop spheres, boxes, and cylinders, then watch them sta
 Requires **Node.js 22**.
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -73,3 +73,7 @@ public/                    # Favicon and Open Graph image
 ## License
 
 MIT
+
+## Audit and verification
+
+See [the audit follow-up](docs/AUDIT-FOLLOWUP.md) for fixes, reproducible test commands, bundle budgets and remaining device/deployment checks.
